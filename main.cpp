@@ -7,8 +7,10 @@ public:
         int max = 0;
         int newMin = 0;
         int newMax = 0;
+        int size = s.size();
+        int newSize = 0;
         
-        for (int i = 0; i < s.size(); ++i) {
+        for (int i = 0; i < size; ++i) {
             arr[s[i]-'a']++;    
             if (s[i] - 'a' < min) {
                 min = s[i] - 'a';
@@ -18,39 +20,32 @@ public:
             }
         }
         
-        bool elementFound = false;
-        bool isIncreasing = true;
-        
         do {
-            elementFound = false;
-            cout << min << " " << max << endl;
-            if (isIncreasing) {
-                isIncreasing = false;
-                
-                for (int i = min; i <= max; ++i) {
-                    if (arr[i] > 0) {
-                        elementFound = true;
-                        res += 'a' + i;
-                        arr[i]--;
-                        newMax = i;
-                    }
-                }
-                max = newMax;
+            if (size == newSize) {
+                break;
             }
-            else {
-                isIncreasing = true;
                 
-                for (int i = max; i >= min; --i) {
-                    if (arr[i] > 0) {
-                        elementFound = true;
-                        res += 'a' + i;
-                        arr[i]--;
-                        newMin = i;
-                    }
+            for (int i = min; i <= max; ++i) {
+                if (arr[i]-- > 0) {
+                    res += 'a' + i;
+                    newMax = i;
+                    newSize++;
                 }
-                min = newMin;
             }
-        } while(elementFound);
+            max = newMax;
+            if (size == newSize) {
+                break;
+            }
+            
+            for (int i = max; i >= min; --i) {
+                if (arr[i]-- > 0) {
+                    res += 'a' + i;
+                    newMin = i;
+                    newSize++;
+                }
+            }            
+            min = newMin;
+        } while(true);
         
         return res;
     }
